@@ -3,7 +3,7 @@
 
     <artifactId>mongodriver</artifactId>
     <groupId>net.karmafiles.db</groupId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
 
     <packaging>jar</packaging>
 
@@ -76,7 +76,7 @@
     </distributionManagement>
 
     <scm>
-        <connection>scm:git:git://git@infocenter.jacum.com/opt/repositories/mongodriver.git</connection>
+        <connection>scm:git:ssh://git@infocenter.jacum.com/opt/repositories/mongodriver.git</connection>
     </scm>
 
 </project>
