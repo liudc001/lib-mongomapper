@@ -2,10 +2,7 @@ package net.karmafiles.ff.core.tool.dbutil.converter.bean;
 
 import com.mongodb.BasicDBList;
 import com.mongodb.DBObject;
-import net.karmafiles.ff.core.tool.dbutil.converter.BaseProxy;
-import net.karmafiles.ff.core.tool.dbutil.converter.BeanDescription;
-import net.karmafiles.ff.core.tool.dbutil.converter.MapClasses;
-import net.karmafiles.ff.core.tool.dbutil.converter.MongoConverter;
+import net.karmafiles.ff.core.tool.dbutil.converter.*;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
 import org.apache.commons.beanutils.PropertyUtils;
@@ -124,7 +121,7 @@ public abstract class BeanMethodInterceptor implements MethodInterceptor {
                         resultValue = Enum.valueOf(c, (String) sourceValue);
 
                     } else if(sourceValue instanceof DBObject) {
-                        resultValue = MongoConverter.toObject(propertyDescriptor.getPropertyType(), (DBObject)sourceValue);
+                        resultValue = Converter.toObject(propertyDescriptor.getPropertyType(), (DBObject)sourceValue);
                     }
 
                     if(resultValue == null) { // other types are passed with no change
@@ -162,9 +159,9 @@ public abstract class BeanMethodInterceptor implements MethodInterceptor {
         Object instance;
         if(dbObject.containsField("implementation")) {
             Class genericClass = Class.forName((String)dbObject.get("implementation"));
-            instance = MongoConverter.toObject(genericClass, dbObject);
+            instance = Converter.toObject(genericClass, dbObject);
         } else {
-            instance = MongoConverter.toObject(c, dbObject);
+            instance = Converter.toObject(c, dbObject);
         }
         return instance;
     }

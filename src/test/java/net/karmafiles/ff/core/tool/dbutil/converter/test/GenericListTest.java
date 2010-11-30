@@ -2,7 +2,7 @@ package net.karmafiles.ff.core.tool.dbutil.converter.test;
 
 import com.mongodb.*;
 import junit.framework.TestCase;
-import net.karmafiles.ff.core.tool.dbutil.converter.MongoConverter;
+import net.karmafiles.ff.core.tool.dbutil.converter.Converter;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
@@ -43,12 +43,12 @@ public class GenericListTest extends TestCase {
         DBCollection coll = db.getCollection("testCollection");
         coll.drop();
 
-        DBObject dbObject = MongoConverter.toDBObject(entity);
+        DBObject dbObject = Converter.toDBObject(entity);
         coll.save(dbObject);
 
         DBObject newDbObject = coll.findOne();
 
-        GenericListEntity newEntity = MongoConverter.toObject(GenericListEntity.class, newDbObject);
+        GenericListEntity newEntity = Converter.toObject(GenericListEntity.class, newDbObject);
         assertNotNull(newEntity);
         assertNotNull(newEntity.getList());
         assertEquals(3, newEntity.getList().size());
@@ -88,11 +88,11 @@ public class GenericListTest extends TestCase {
         newEntity.getList().remove(2);
         newEntity.getList().remove(1);
         newEntity.getList().add(new Descendant2Entity("blah", "blah", "blah"));
-        coll.update(idQuery(newEntity), MongoConverter.toDBObject(newEntity));
+        coll.update(idQuery(newEntity), Converter.toDBObject(newEntity));
 
         newDbObject = coll.findOne();
 
-        newEntity = MongoConverter.toObject(GenericListEntity.class, newDbObject);
+        newEntity = Converter.toObject(GenericListEntity.class, newDbObject);
         assertNotNull(newEntity);
         assertNotNull(newEntity.getList());
         assertEquals(2, newEntity.getList().size());
@@ -131,12 +131,12 @@ public class GenericListTest extends TestCase {
         DBCollection coll = db.getCollection("testCollection");
         coll.drop();
 
-        DBObject dbObject = MongoConverter.toDBObject(entity);
+        DBObject dbObject = Converter.toDBObject(entity);
         coll.save(dbObject);
 
         DBObject newDbObject = coll.findOne();
 
-        GenericListEntity newEntity = MongoConverter.toObject(GenericListEntity.class, newDbObject);
+        GenericListEntity newEntity = Converter.toObject(GenericListEntity.class, newDbObject);
         assertNotNull(newEntity);
 
         assertNotNull(newEntity.getSet());
@@ -177,11 +177,11 @@ public class GenericListTest extends TestCase {
 
         newEntity.getSet().clear();
         newEntity.getSet().add(new Descendant2Entity("blah", "blah", "blah"));
-        coll.update(idQuery(newEntity), MongoConverter.toDBObject(newEntity));
+        coll.update(idQuery(newEntity), Converter.toDBObject(newEntity));
 
         newDbObject = coll.findOne();
 
-        newEntity = MongoConverter.toObject(GenericListEntity.class, newDbObject);
+        newEntity = Converter.toObject(GenericListEntity.class, newDbObject);
         assertNotNull(newEntity);
         assertNotNull(newEntity.getSet());
         assertEquals(1, newEntity.getSet().size());
@@ -210,12 +210,12 @@ public class GenericListTest extends TestCase {
         DBCollection coll = db.getCollection("testCollection");
         coll.drop();
 
-        DBObject dbObject = MongoConverter.toDBObject(entity);
+        DBObject dbObject = Converter.toDBObject(entity);
         coll.save(dbObject);
 
         DBObject newDbObject = coll.findOne();
 
-        GenericListEntity newEntity = MongoConverter.toObject(GenericListEntity.class, newDbObject);
+        GenericListEntity newEntity = Converter.toObject(GenericListEntity.class, newDbObject);
         assertNotNull(newEntity);
         assertNotNull(newEntity.getMap());
         assertEquals(3, newEntity.getMap().size());
@@ -256,11 +256,11 @@ public class GenericListTest extends TestCase {
 
         newEntity.getMap().remove(TestEnumEntity.FOUR);
         newEntity.getMap().put(TestEnumEntity.SIX, new Descendant2Entity("blah", "blah", "blah"));
-        coll.update(idQuery(newEntity), MongoConverter.toDBObject(newEntity));
+        coll.update(idQuery(newEntity), Converter.toDBObject(newEntity));
 
         newDbObject = coll.findOne();
 
-        newEntity = MongoConverter.toObject(GenericListEntity.class, newDbObject);
+        newEntity = Converter.toObject(GenericListEntity.class, newDbObject);
         assertNotNull(newEntity);
         assertNotNull(newEntity.getMap());
         assertEquals(2, newEntity.getMap().size());

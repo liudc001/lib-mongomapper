@@ -4,7 +4,7 @@ import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.Mongo;
-import net.karmafiles.ff.core.tool.dbutil.converter.MongoConverter;
+import net.karmafiles.ff.core.tool.dbutil.converter.Converter;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
@@ -55,7 +55,7 @@ public class TestConverter {
         DBCollection coll = db.getCollection("testCollection");
         coll.drop();
 
-        DBObject dbObject = MongoConverter.toDBObject(testEntity);
+        DBObject dbObject = Converter.toDBObject(testEntity);
         coll.save(dbObject);
 
         DBObject newDbObject = coll.findOne();
@@ -96,7 +96,7 @@ public class TestConverter {
         DBCollection coll = db.getCollection("testCollection");
         coll.drop();
 
-        coll.save(MongoConverter.toDBObject(testEntity3));
+        coll.save(Converter.toDBObject(testEntity3));
     }
 
     @Test
@@ -120,12 +120,12 @@ public class TestConverter {
         DBCollection coll = db.getCollection("testCollection");
         coll.drop();
 
-        DBObject dbObject = MongoConverter.toDBObject(testEntity);
+        DBObject dbObject = Converter.toDBObject(testEntity);
         coll.save(dbObject);
 
         DBObject newDbObject = coll.findOne();
 
-        TestEntity convertedTestEntity = MongoConverter.toObject(TestEntity.class, newDbObject);
+        TestEntity convertedTestEntity = Converter.toObject(TestEntity.class, newDbObject);
 
         assert convertedTestEntity != null;
         assert convertedTestEntity.get_id().equals(testEntity.get_id());
@@ -151,11 +151,11 @@ public class TestConverter {
         DBCollection coll = db.getCollection("testCollection");
         coll.drop();
 
-        DBObject dbObject = MongoConverter.toDBObject(testEntity5);
+        DBObject dbObject = Converter.toDBObject(testEntity5);
         coll.save(dbObject);
 
         DBObject newDbObject = coll.findOne();
-        TestEntity5 newTestEntity5 = MongoConverter.toObject(TestEntity5.class, newDbObject);
+        TestEntity5 newTestEntity5 = Converter.toObject(TestEntity5.class, newDbObject);
         assert newTestEntity5 != null;
         List<String> stringList = newTestEntity5.getStringList();
         assert stringList != null;
@@ -183,11 +183,11 @@ public class TestConverter {
         DBCollection coll = db.getCollection("testCollection");
         coll.drop();
 
-        DBObject dbObject = MongoConverter.toDBObject(testEntity5);
+        DBObject dbObject = Converter.toDBObject(testEntity5);
         coll.save(dbObject);
 
         DBObject newDbObject = coll.findOne();
-        TestEntity5 newTestEntity5 = MongoConverter.toObject(TestEntity5.class, newDbObject);
+        TestEntity5 newTestEntity5 = Converter.toObject(TestEntity5.class, newDbObject);
         assert newTestEntity5 != null;
         List<TestEntity4> newTestEntity4List = testEntity5.getEntity4List();
         assert newTestEntity4List != null;
@@ -214,11 +214,11 @@ public class TestConverter {
         DBCollection coll = db.getCollection("testCollection");
         coll.drop();
 
-        DBObject dbObject = MongoConverter.toDBObject(testEntity5);
+        DBObject dbObject = Converter.toDBObject(testEntity5);
         coll.save(dbObject);
 
         DBObject newDbObject = coll.findOne();
-        TestEntity5 newTestEntity5 = MongoConverter.toObject(TestEntity5.class, newDbObject);
+        TestEntity5 newTestEntity5 = Converter.toObject(TestEntity5.class, newDbObject);
         assert newTestEntity5 != null;
         Map<String, String> newMap = newTestEntity5.getStringToStringMap();
 
@@ -245,11 +245,11 @@ public class TestConverter {
         DBCollection coll = db.getCollection("testCollection");
         coll.drop();
 
-        DBObject dbObject = MongoConverter.toDBObject(t);
+        DBObject dbObject = Converter.toDBObject(t);
         coll.save(dbObject);
 
         DBObject newDbObject = coll.findOne();
-        TestEntity6 newT = MongoConverter.toObject(TestEntity6.class, newDbObject);
+        TestEntity6 newT = Converter.toObject(TestEntity6.class, newDbObject);
         assert newT != null;
         assert newT.get_id().equals("bababa");
         assert newT.getEmbeddedEnum() == TestEntity6.TestEnumEmbeddedEntity.ONE;
@@ -305,11 +305,11 @@ public class TestConverter {
         DBCollection coll = db.getCollection("testCollection");
         coll.drop();
 
-        DBObject dbObject = MongoConverter.toDBObject(t);
+        DBObject dbObject = Converter.toDBObject(t);
         coll.save(dbObject);
 
         DBObject newDbObject = coll.findOne();
-        TestEntity7 newT = MongoConverter.toObject(TestEntity7.class, newDbObject);
+        TestEntity7 newT = Converter.toObject(TestEntity7.class, newDbObject);
         assertNotNull(newT);
         assertEquals("bababa", newT.get_id());
         assertNotNull(newT.getEnumToEntityMap());

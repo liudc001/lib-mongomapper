@@ -4,7 +4,7 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.QueryBuilder;
 import net.karmafiles.ff.core.tool.Assert;
-import net.karmafiles.ff.core.tool.dbutil.converter.MongoConverter;
+import net.karmafiles.ff.core.tool.dbutil.converter.Converter;
 import org.bson.types.ObjectId;
 
 /**
@@ -51,19 +51,19 @@ public abstract class DaoHelperTemplate<T> {
 
     public T add(T entity) {
         Assert.notNull(entity, "entity may not be null");
-        DBObject dbObject = MongoConverter.toDBObject(entity);
+        DBObject dbObject = Converter.toDBObject(entity);
 
         beforeAdd(dbObject);
         
         getDbCollection().save(dbObject);
 
-        return MongoConverter.toObject(getType(), dbObject);
+        return Converter.toObject(getType(), dbObject);
     }
 
     public T get(String id) {
         DBObject dbObject = getDbCollection().findOne(idQuery(id));
         if(dbObject != null) {
-            return MongoConverter.toObject(getType(), dbObject);
+            return Converter.toObject(getType(), dbObject);
         } else {
             return null;
         }
@@ -87,7 +87,7 @@ public abstract class DaoHelperTemplate<T> {
 
 
         Assert.notNull(entity);
-        DBObject dbObject = MongoConverter.toDBObject(entity);
+        DBObject dbObject = Converter.toDBObject(entity);
 
         beforeUpdate(dbObject);
 
@@ -99,7 +99,7 @@ public abstract class DaoHelperTemplate<T> {
         // kind of need to do this explicitly to avoid stale data 
         getDbCollection().getDB().command("{fsync:1}");
 
-        return MongoConverter.toObject(getType(), dbObject);
+        return Converter.toObject(getType(), dbObject);
     }
 
 }

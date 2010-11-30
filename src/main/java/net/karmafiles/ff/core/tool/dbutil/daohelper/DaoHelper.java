@@ -5,7 +5,7 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import net.karmafiles.ff.core.tool.IdGenerator;
 import net.karmafiles.ff.core.tool.dbutil.ConnectionImpl;
-import net.karmafiles.ff.core.tool.dbutil.converter.MongoConverter;
+import net.karmafiles.ff.core.tool.dbutil.converter.Converter;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -114,7 +114,7 @@ public class DaoHelper<T> extends BaseDaoHelper<T> {
         DBCursor cursor = getDbCollection().find();
         if (cursor.count() < MAX_NUMBER_AS_LIST) {
             while (cursor.hasNext()) {
-                T t = MongoConverter.toObject(getType(), cursor.next());
+                T t = Converter.toObject(getType(), cursor.next());
                 if (filter == null) {
                     entities.add(t);
                 } else if (filter.accepts(t)) {

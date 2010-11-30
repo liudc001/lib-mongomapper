@@ -63,4 +63,18 @@
         </plugins>
     </build>
 
+    <distributionManagement>
+            <repository>
+            <id>ff-releases</id>
+            <url>http://dev-ff.jacum.com/nexus/content/repositories/releases</url>
+          </repository>
+
+        <snapshotRepository>
+            <id>ff-snapshots</id>
+            <url>http://dev-ff.jacum.com/nexus/content/repositories/snapshots</url>
+            <uniqueVersion>false</uniqueVersion>
+        </snapshotRepository>
+    </distributionManagement>
+    
+
 </project>
