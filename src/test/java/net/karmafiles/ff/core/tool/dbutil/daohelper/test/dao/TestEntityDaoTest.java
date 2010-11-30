@@ -7,10 +7,10 @@ import com.mongodb.Mongo;
 import net.karmafiles.ff.core.tool.IdGenerator;
 import net.karmafiles.ff.core.tool.dbutil.ConnectionImpl;
 import net.karmafiles.ff.core.tool.dbutil.MongoConnection;
+import net.karmafiles.ff.core.tool.dbutil.daohelper.DaoHelper;
 import net.karmafiles.ff.core.tool.dbutil.daohelper.test.entity.EmbeddedTestEntity;
 import net.karmafiles.ff.core.tool.dbutil.daohelper.test.entity.TestEntity;
 import net.karmafiles.ff.core.tool.dbutil.daohelper.DaoException;
-import net.karmafiles.ff.core.tool.dbutil.daohelper.DaoHelper;
 import net.karmafiles.ff.core.tool.dbutil.daohelper.FieldValueChecker;
 import net.karmafiles.ff.core.tool.dbutil.daohelper.FieldValueProvider;
 import org.testng.annotations.BeforeTest;
@@ -39,6 +39,7 @@ public class TestEntityDaoTest {
     }
 
     
+    
     public static class Connection implements MongoConnection {
         private Mongo mongo;
         private DB db;
@@ -64,6 +65,16 @@ public class TestEntityDaoTest {
 
 
     public static class TestEntityHelper<TestEntity> extends DaoHelper<TestEntity> {
+
+        private ConnectionImpl connection;
+
+        public ConnectionImpl getConnection() {
+            return connection;
+        }
+
+        public void setConnection(ConnectionImpl connection) {
+            this.connection = connection;
+        }
 
         public void init(Class<TestEntity> type, String dbCollectionName) {
             super.init(type, dbCollectionName);

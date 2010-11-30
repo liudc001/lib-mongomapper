@@ -23,19 +23,9 @@ import java.util.List;
  * skype: ilya.brodotsky
  */
 
-public class DaoHelper<T> extends BaseDaoHelper<T> {
+public abstract class DaoHelper<T> extends BaseDaoHelper<T> {
 
     private static final int MAX_NUMBER_AS_LIST = 10000;
-
-    private ConnectionImpl connection;
-
-    public ConnectionImpl getConnection() {
-        return connection;
-    }
-
-    public void setConnection(ConnectionImpl connection) {
-        this.connection = connection;
-    }
 
     protected void init(Class<T> type) {
         this.init(type, extractCollectionName(type)); // by default, store in collections per class name
@@ -55,8 +45,10 @@ public class DaoHelper<T> extends BaseDaoHelper<T> {
      */
 
     protected void init(Class<T> type, String dbCollectionName) {
-        this.init(type, connection.getCollection(dbCollectionName));            
+        this.init(type, getConnection().getCollection(dbCollectionName));
     }
+
+    public abstract ConnectionImpl getConnection();
 
     protected void init(Class<T> type, DBCollection dbCollection) {
         super.init(type, dbCollection);
