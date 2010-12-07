@@ -3,10 +3,13 @@ package net.karmafiles.ff.core.tool.dbutil;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.Mongo;
+import com.mongodb.ServerAddress;
 import net.karmafiles.ff.core.tool.dbutil.daohelper.DaoException;
 
 import javax.annotation.PostConstruct;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Ilya Brodotsky
@@ -28,6 +31,7 @@ public class ConnectionImpl implements MongoConnection {
     private String connectionHost;
     private Integer connectionPort;
     private String connectionDatabase;
+    private String connectionDescriptor;
 
     public void setConnectionDatabase(String connectionDatabase) {
         this.connectionDatabase = connectionDatabase;
@@ -41,10 +45,36 @@ public class ConnectionImpl implements MongoConnection {
         this.connectionHost = connectionHost;
     }
 
+    public String getConnectionDescriptor() {
+        return connectionDescriptor;
+    }
+
+    public void setConnectionDescriptor(String connectionDescriptor) {
+        this.connectionDescriptor = connectionDescriptor;
+    }
+
     @PostConstruct
     public void connect() {
         try {
-            mongo = new Mongo(connectionHost, connectionPort);
+            if (connectionDescriptor != null) {
+                String[] hosts = connectionDescriptor.split(",");
+                List<ServerAddress> addr = new ArrayList<ServerAddress>();
+                for (String host: hosts) {
+                    String[] hostPortPair = host.split(":");
+                    int port = 27017;
+                    if (hostPortPair.length > 1) {
+                        try {
+                            port = Integer.parseInt(hostPortPair[1]);
+                        } catch (NumberFormatException e) {
+                            // port doesn't look as port
+                        }
+                    }
+                    addr.add(new ServerAddress(host, port));
+                }
+                mongo = new Mongo(addr);
+            } else {
+                mongo = new Mongo(connectionHost, connectionPort);
+            }
             db = mongo.getDB(connectionDatabase);
         } catch (UnknownHostException e) {
             throw new DaoException(e);
