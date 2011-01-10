@@ -50,11 +50,25 @@ public abstract class DaoHelperTemplate<T> {
     }
 
     public T add(T entity) {
+        return add(entity, true);
+    }
+
+    public T add(T entity, boolean checkExists) {
         Assert.notNull(entity, "entity may not be null");
+
         DBObject dbObject = Converter.toDBObject(entity);
+        if (checkExists)  {
+            String id = (String)dbObject.get("_id");
+            if (id != null) {
+                if (getDbCollection().findOne(idQuery(id)) != null) {
+                    throw new DaoException("Can't add: object with id='"
+                            + id + "' already exists in the collection '" + dbCollection.getFullName() + "'.");
+                }
+            }
+        }
 
         beforeAdd(dbObject);
-        
+
         getDbCollection().save(dbObject);
 
         return Converter.toObject(getType(), dbObject);
