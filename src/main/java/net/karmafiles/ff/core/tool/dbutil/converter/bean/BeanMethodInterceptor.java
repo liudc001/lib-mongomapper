@@ -84,7 +84,12 @@ public abstract class BeanMethodInterceptor implements MethodInterceptor {
                             Object key = enumKey ? Enum.valueOf(mapClasses.classA, k) : k;
 
                             if (isStandardClass) {
-                                map.put(key, value);
+                                // to prevent Mongo from supplying us Integers and Longs in Map<String,String>
+                                map.put(key, (value != null &&
+                                               !(value instanceof String)
+                                                && String.class.equals(mapClasses.classB)) ?
+                                            value.toString() : value);
+
                             } else if (mapClasses.classB.isEnum() && value instanceof String) {
                                 map.put(key, Enum.valueOf(mapClasses.classB, (String) value));
                             } else {
