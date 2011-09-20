@@ -1,3 +1,34 @@
+/*
+ * Copyright 2011 Dadastream. All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without modification, are
+ * permitted provided that the following conditions are met:
+ *
+ *    1. Redistributions of source code must retain the above copyright notice, this list of
+ *       conditions and the following disclaimer.
+ *
+ *    2. Redistributions in binary form must reproduce the above copyright notice, this list
+ *       of conditions and the following disclaimer in the documentation and/or other materials
+ *       provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY DADASTREAM ''AS IS'' AND ANY EXPRESS OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+ * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL DADASTREAM OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+ * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+ * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+ * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * The views and conclusions contained in the software and documentation are those of the
+ * authors and should not be interpreted as representing official policies, either expressed
+ * or implied, of Dadastream.
+ *
+ * @author Ilya Brodotsky
+ * @author Timur Evdokimov
+ */
+
 package net.karmafiles.ff.core.tool.dbutil.converter.dbobject;
 
 import com.mongodb.DBObject;
@@ -7,18 +38,6 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.bson.BSONObject;
 
 import java.util.*;
-
-/**
- * Created by Ilya Brodotsky
- * Date: 08.10.2010
- * Time: 14:26:33
- * <p/>
- * All rights reserved.
- * <p/>
- * Contact me:
- * email, jabber: ilya.brodotsky@gmail.com
- * skype: ilya.brodotsky
- */
 
 public class DBObjectProxy extends BaseProxy implements DBObject  {
 
@@ -84,17 +103,13 @@ public class DBObjectProxy extends BaseProxy implements DBObject  {
 
     public Map toMap() {
         Map m = new HashMap();
-        Iterator<String> i = beanDescription.getPropertyNames().iterator();
 
-        while(i.hasNext()) {
-            String key = i.next();
+        for (String key : beanDescription.getPropertyNames()) {
             m.put(key, get(key));
         }
 
         if(genericValues != null) {
-            i = genericValues.keySet().iterator();
-            while(i.hasNext()) {
-                String key = i.next();
+            for (String key : genericValues.keySet()) {
                 m.put(key, genericValues.get(key));
             }
         }
@@ -107,11 +122,8 @@ public class DBObjectProxy extends BaseProxy implements DBObject  {
     }
 
     public boolean containsKey(String s) {
-        if(genericValues != null && genericValues.containsKey(s)) {
-           return true;
-        }
-        
-        return beanDescription.getPropertyDescriptor(s) != null;
+        return genericValues != null && genericValues.containsKey(s) || beanDescription.getPropertyDescriptor(s) != null;
+
     }
 
     public boolean containsField(String s) {
@@ -119,7 +131,7 @@ public class DBObjectProxy extends BaseProxy implements DBObject  {
     }
 
     public Set<String> keySet() {
-        Set<String> set = new HashSet();
+        Set<String> set = new HashSet<String>();
         set.addAll(beanDescription.getPropertyNames());
         if(genericValues != null) {
             set.addAll(genericValues.keySet());
