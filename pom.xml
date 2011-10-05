@@ -83,7 +83,7 @@
         <snapshotRepository>
             <id>ff-snapshots</id>
             <url>http://dev-ff.jacum.com/nexus/content/repositories/snapshots</url>
-            <uniqueVersion>false</uniqueVersion>
+            <uniqueVersion>true</uniqueVersion>
         </snapshotRepository>
     </distributionManagement>
 
