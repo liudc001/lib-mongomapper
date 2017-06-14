@@ -36,7 +36,7 @@ import net.karmafiles.ff.core.tool.dbutil.converter.BeanDescription;
 import net.sf.cglib.proxy.Enhancer;
 
 public class BeanEnhancer {
-    public static Object create(Class clazz, final DBObject source) {
+    public static Object create(Class<?> clazz, final DBObject source) {
         if(clazz == null || source == null) {
             throw new RuntimeException("One of parameters is null");
         }
